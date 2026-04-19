@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SolProof AI MVP</title>
+    <meta
+      name="description"
+      content="SolProof AI MVP: a GitHub-ready static demo for verifiable AI on Solana."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <div class="ambient ambient-a"></div>
+      <div class="ambient ambient-b"></div>
+      <header class="topbar">
+        <div class="brand-lockup">
+          <div class="brand-mark">P</div>
+          <div>
+            <p class="eyebrow">Solana Verifiable AI</p>
+            <h1>SolProof AI</h1>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <span class="status-pill">MVP / Devnet-style Demo</span>
+          <button id="walletButton" class="wallet-button">Connect Wallet</button>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="hero card card-hero">
+          <div class="hero-copy">
+            <p class="eyebrow accent">Project Narrative</p>
+            <h2>If it's not on SolProof, it's just a hallucination.</h2>
+            <p class="hero-text">
+              This MVP focuses on the first-principles core of the product:
+              select a model, submit input, generate a verifiable proof bundle,
+              and inspect the result as if it were headed on-chain.
+            </p>
+            <div class="hero-stats">
+              <div>
+                <span class="stat-label">Token</span>
+                <strong>PROOF</strong>
+              </div>
+              <div>
+                <span class="stat-label">Visible CA</span>
+                <strong>Not Announced</strong>
+              </div>
+              <div>
+                <span class="stat-label">Official Site</span>
+                <a href="https://proofaisol.xyz/" target="_blank" rel="noreferrer">proofaisol.xyz</a>
+              </div>
+            </div>
+          </div>
+          <div class="hero-panel">
+            <p class="panel-title">Why this MVP exists</p>
+            <ul class="signal-list">
+              <li>Show the smallest believable SolProof product loop</li>
+              <li>Stay GitHub-friendly with zero build tooling</li>
+              <li>Leave clean seams for real AI and on-chain verification later</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="main-grid">
+          <div class="stack">
+            <section class="card">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Module 1</p>
+                  <h3>Model Registry</h3>
+                </div>
+                <span id="selectedTier" class="status-pill status-pill-soft">Select a model</span>
+              </div>
+              <div id="modelGrid" class="model-grid"></div>
+            </section>
+
+            <section class="card">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Module 2</p>
+                  <h3>Inference Console</h3>
+                </div>
+                <span id="modelHint" class="status-pill status-pill-soft">Zero-dependency front end</span>
+              </div>
+
+              <form id="inferenceForm" class="inference-form">
+                <label class="field">
+                  <span>Prompt / Input Payload</span>
+                  <textarea
+                    id="promptInput"
+                    rows="7"
+                    placeholder="Describe a DeFi risk event, paste a transaction note, or write the content you want SolProof to evaluate."
+                  ></textarea>
+                </label>
+
+                <div class="field-row">
+                  <label class="field">
+                    <span>Optional Attachment</span>
+                    <input id="fileInput" type="file" />
+                  </label>
+                  <div class="field field-inline proof-burn-box">
+                    <span>Execution Mode</span>
+                    <strong id="executionMode">Trial</strong>
+                    <small id="burnPreview">0 PROOF burn</small>
+                  </div>
+                </div>
+
+                <div class="quick-actions">
+                  <button type="button" class="ghost-button" data-seed="defi">
+                    Seed DeFi Input
+                  </button>
+                  <button type="button" class="ghost-button" data-seed="sentiment">
+                    Seed Sentiment Input
+                  </button>
+                  <button type="button" class="ghost-button" data-seed="fraud">
+                    Seed Fraud Input
+                  </button>
+                </div>
+
+                <div class="submit-row">
+                  <button id="runButton" type="submit" class="primary-button">
+                    Generate Proof
+                  </button>
+                  <p class="helper-text">
+                    Pro models require a connected demo wallet and consume local
+                    PROOF balance in this MVP.
+                  </p>
+                </div>
+              </form>
+            </section>
+          </div>
+
+          <div class="stack">
+            <section class="card">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Module 3</p>
+                  <h3>Verification Pipeline</h3>
+                </div>
+                <span id="pipelineState" class="status-pill status-pill-soft">Idle</span>
+              </div>
+              <div class="progress-shell">
+                <div id="progressBar" class="progress-bar"></div>
+              </div>
+              <div id="logList" class="log-list"></div>
+            </section>
+
+            <section class="card">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Module 4</p>
+                  <h3>Proof Artifact</h3>
+                </div>
+                <div class="action-row">
+                  <button id="verifyBundleButton" class="ghost-button" type="button">
+                    Verify Bundle
+                  </button>
+                  <button id="copyBundleButton" class="ghost-button" type="button">
+                    Copy JSON
+                  </button>
+                </div>
+              </div>
+              <div id="resultPanel" class="result-panel empty-state">
+                Run an inference to materialize the proof bundle.
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Module 5</p>
+                  <h3>Token & History</h3>
+                </div>
+                <span id="walletState" class="status-pill status-pill-soft">Wallet disconnected</span>
+              </div>
+              <div class="balance-strip">
+                <div>
+                  <span class="stat-label">PROOF Balance</span>
+                  <strong id="proofBalance">0</strong>
+                </div>
+                <div>
+                  <span class="stat-label">Total Burned</span>
+                  <strong id="totalBurned">0</strong>
+                </div>
+                <div>
+                  <span class="stat-label">History</span>
+                  <strong id="historyCount">0 Runs</strong>
+                </div>
+              </div>
+              <div id="historyList" class="history-list empty-state">
+                No verification history yet.
+              </div>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
