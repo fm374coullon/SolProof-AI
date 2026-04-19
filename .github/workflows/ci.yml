@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Verify required project files
+        run: |
+          required_files=(
+            "index.html"
+            "styles.css"
+            "app.js"
+            "README.md"
+            "LICENSE"
+            "modules/data.js"
+            "modules/engine.js"
+            "modules/state.js"
+            "assets/logo.png"
+          )
+
+          for file in "${required_files[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "Missing required file: $file"
+              exit 1
+            fi
+          done
+
+      - name: Check JavaScript syntax
+        run: |
+          node --check app.js
+          node --check modules/data.js
+          node --check modules/engine.js
+          node --check modules/state.js
+
+      - name: Ensure README uses project links
+        run: |
+          grep -q "https://proofaisol.xyz/" README.md
+          grep -q "https://x.com/PROOF__SOL" README.md
+          grep -q "https://github.com/fm374coullon/SolProof-AI.git" README.md
